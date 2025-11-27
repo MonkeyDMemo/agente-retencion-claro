@@ -3,11 +3,9 @@ runtime: python311
 build:
   commands:
     build:
-      - pip install -r requirements.txt
+      - python3 -m pip install --upgrade pip
+      - python3 -m pip install -r requirements.txt
 run:
-  command: streamlit run streamlit.py --server.port=8080 --server.address=0.0.0.0 --server.headless=true
+  command: python3 -m streamlit run streamlit.py --server.port=8080 --server.address=0.0.0.0 --server.headless=true
   network:
     port: 8080
-  env:
-    - name: PORT
-      value: "8080"
