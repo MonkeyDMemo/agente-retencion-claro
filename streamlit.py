@@ -33,7 +33,7 @@ RUTA_DATOS = os.getenv("RUTA_DATOS", r"C:\Users\resendizjg\Downloads\piloto_resu
 # REQUERIDO: Si ejecutas localmente, configura AWS_ACCESS_KEY_ID y AWS_SECRET_ACCESS_KEY
 AWS_ACCESS_KEY_ID = os.getenv("AWS_ACCESS_KEY_ID", "")
 AWS_SECRET_ACCESS_KEY = os.getenv("AWS_SECRET_ACCESS_KEY", "")
-AWS_REGION = os.getenv("AWS_REGION", "us-east-1")
+AWS_REGION = os.getenv("AWS_REGION", "us-west-2")
 S3_PREFIX = os.getenv("S3_PREFIX", "")
 
 # ============================================
