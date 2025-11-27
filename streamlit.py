@@ -25,10 +25,12 @@ API_VERSION = os.getenv("API_VERSION", "2024-02-15-preview")
 # ============================================
 # CONFIGURACIÓN FUENTE DE DATOS
 # ============================================
-TIPO_FUENTE = os.getenv("TIPO_FUENTE", "local")
+TIPO_FUENTE = os.getenv("TIPO_FUENTE", "s3")
 RUTA_DATOS = os.getenv("RUTA_DATOS", r"C:\Users\resendizjg\Downloads\piloto_resultados")
 
 # Configuración AWS S3 (solo si TIPO_FUENTE = "s3")
+# OPCIONAL: Si usas rol IAM en AWS (App Runner, EC2, Lambda), deja estas vacías
+# REQUERIDO: Si ejecutas localmente, configura AWS_ACCESS_KEY_ID y AWS_SECRET_ACCESS_KEY
 AWS_ACCESS_KEY_ID = os.getenv("AWS_ACCESS_KEY_ID", "")
 AWS_SECRET_ACCESS_KEY = os.getenv("AWS_SECRET_ACCESS_KEY", "")
 AWS_REGION = os.getenv("AWS_REGION", "us-east-1")
@@ -38,7 +40,7 @@ S3_PREFIX = os.getenv("S3_PREFIX", "")
 # CONFIGURACIÓN STREAMLIT
 # ============================================
 st.set_page_config(
-    page_title="Dashboard Agente", 
+    page_title="Dashboard Retención", 
     page_icon="📊", 
     layout="wide",
     initial_sidebar_state="collapsed"
@@ -161,12 +163,19 @@ def normalizar_respuestas(df):
 def cargar_datos_s3(bucket_name, prefix=""):
     """Carga archivos Excel desde S3"""
     try:
-        s3_client = boto3.client(
-            's3',
-            aws_access_key_id=AWS_ACCESS_KEY_ID,
-            aws_secret_access_key=AWS_SECRET_ACCESS_KEY,
-            region_name=AWS_REGION
-        )
+        # Intentar usar rol IAM primero (para EC2, App Runner, Lambda, etc.)
+        # Si no hay rol, usar credenciales explícitas
+        if AWS_ACCESS_KEY_ID and AWS_SECRET_ACCESS_KEY:
+            # Credenciales explícitas (local o sin rol)
+            s3_client = boto3.client(
+                's3',
+                aws_access_key_id=AWS_ACCESS_KEY_ID,
+                aws_secret_access_key=AWS_SECRET_ACCESS_KEY,
+                region_name=AWS_REGION
+            )
+        else:
+            # Usar rol IAM (recomendado para producción en AWS)
+            s3_client = boto3.client('s3', region_name=AWS_REGION)
         
         response = s3_client.list_objects_v2(
             Bucket=bucket_name,
@@ -326,7 +335,7 @@ def call_azure_openai(pregunta, contexto):
 # INTERFAZ PRINCIPAL
 # ============================================
 
-st.title("Dashboard Agente Retención Claro Perú")
+st.title("Dashboard de Retención de Clientes")
 
 # Tabs para Dashboard y Chat
 tab1, tab2 = st.tabs(["📊 Dashboard", "💬 Chat IA"])
