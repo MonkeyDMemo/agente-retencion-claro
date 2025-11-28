@@ -3,16 +3,9 @@ runtime: python311
 build:
   commands:
     build:
-      - echo "Build phase completed"
+      - python3 -m pip install --target /app/deps -r requirements.txt
 run:
   runtime-version: 3.11
-  pre-run:
-    - echo "Installing dependencies..."
-    - python3 -m pip install --upgrade pip
-    - python3 -m pip install -r requirements.txt
-    - echo "Dependencies installed"
-    - python3 -c "import streamlit; print('Streamlit OK')"
-    - python3 -c "import pandas; print('Pandas OK')"
-  command: python3 -m streamlit run streamlit.py --server.port=8080 --server.address=0.0.0.0 --server.headless=true
+  command: PYTHONPATH=/app/deps python3 -m streamlit run streamlit.py --server.port=8080 --server.address=0.0.0.0 --server.headless=true
   network:
     port: 8080

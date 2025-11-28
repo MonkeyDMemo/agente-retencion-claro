@@ -26,7 +26,7 @@ API_VERSION = os.getenv("API_VERSION", "2024-02-15-preview")
 # ============================================
 # CONFIGURACIÓN FUENTE DE DATOS
 # ============================================
-TIPO_FUENTE = os.getenv("TIPO_FUENTE", "s3")  # "local" o "s3"
+TIPO_FUENTE = os.getenv("TIPO_FUENTE", "local")  # "local" o "s3"
 RUTA_DATOS = os.getenv("RUTA_DATOS", r"C:\Users\resendizjg\Downloads\piloto_resultados")
 
 # Configuración AWS S3
