@@ -3,11 +3,13 @@ runtime: python311
 build:
   commands:
     build:
-      - echo "Build phase - skipping pip install here"
+      - echo "Build phase"
 run:
-  command: python3 -m pip install -r requirements.txt && python3 -m streamlit run streamlit.py --server.port=8080 --server.address=0.0.0.0 --server.headless=true
+  command: bash start.sh
   network:
     port: 8080
   env:
     - name: PYTHONUNBUFFERED
       value: "1"
+    - name: PATH
+      value: "/root/.local/bin:$PATH"
