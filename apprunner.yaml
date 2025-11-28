@@ -3,14 +3,8 @@ runtime: python311
 build:
   commands:
     build:
-      - python3 -m pip install --target /app/vendor -r requirements.txt
+      - echo "Build OK"
 run:
-  runtime-version: 3.11
-  pre-run:
-    - export PYTHONPATH=/app/vendor:$PYTHONPATH
-  command: PYTHONPATH=/app/vendor:$PYTHONPATH python3 -m streamlit run streamlit.py --server.port=8080 --server.address=0.0.0.0 --server.headless=true
+  command: python3 run.py
   network:
     port: 8080
-  env:
-    - name: PYTHONUNBUFFERED
-      value: "1"
