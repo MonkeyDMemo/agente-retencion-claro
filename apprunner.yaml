@@ -3,9 +3,11 @@ runtime: python311
 build:
   commands:
     build:
-      - python3 -m pip install --target /app/deps -r requirements.txt
+      - python3 -m pip install -r requirements.txt
+    post-build:
+      - cp -r /usr/local/lib/python3.11/site-packages /app/site-packages
 run:
   runtime-version: 3.11
-  command: PYTHONPATH=/app/deps python3 -m streamlit run streamlit.py --server.port=8080 --server.address=0.0.0.0 --server.headless=true
+  command: PYTHONPATH=/app/site-packages python3 -m streamlit run streamlit.py --server.port=8080 --server.address=0.0.0.0 --server.headless=true
   network:
     port: 8080
