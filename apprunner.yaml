@@ -3,13 +3,14 @@ runtime: python311
 build:
   commands:
     build:
-      - echo "Build phase"
+      - python3 -m pip install --target /app/vendor -r requirements.txt
 run:
-  command: bash start.sh
+  runtime-version: 3.11
+  pre-run:
+    - export PYTHONPATH=/app/vendor:$PYTHONPATH
+  command: PYTHONPATH=/app/vendor:$PYTHONPATH python3 -m streamlit run streamlit.py --server.port=8080 --server.address=0.0.0.0 --server.headless=true
   network:
     port: 8080
   env:
     - name: PYTHONUNBUFFERED
       value: "1"
-    - name: PATH
-      value: "/root/.local/bin:$PATH"
